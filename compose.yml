@@ -1,0 +1,25 @@
+services:
+  imap-minio-transcriber:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: imap-minio-transcriber:latest
+    env_file: .env
+    restart: unless-stopped
+    # falls du Systemzeit/Timezone setzen willst:
+    environment:
+      - TZ=Europe/Berlin
+    # optional: geringe CPU/RAM-Limits für kleinen VPS
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
